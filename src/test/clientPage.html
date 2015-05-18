@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <label>User</label>
+    <input id="user" value="user-1"/>
+    <button id="ping" type="button">Ping</button>
+    <br/>
+    <span id="pong"></span>
+</body>
+
+<script src="jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#ping").click(function() {
+
+            data = {
+                command : "ping",
+                args : {
+                    user : $("#user").val(),
+                    count : 1
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/handler",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    console.log(response);
+                    $("#pong").text("pong: " + response.pong)
+                },
+                error: function (result) {
+                    alert("Сервер временно не доступен!")
+                },
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'json'
+            })
+
+        })
+
+
+    })
+</script>
+</html>
